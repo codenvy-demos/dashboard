@@ -24,8 +24,8 @@ let initModule = angular.module('userDashboard', ['ngAnimate', 'ngCookies', 'ngT
 initModule.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.accessWhen = function(path, route) {
     route.resolve || (route.resolve = {});
-    route.resolve.app = ['$q', 'codenvyProfile', 'codenvyUser', function ($q, codenvyProfile, codenvyUser) {
-      return $q.all([codenvyUser.fetchUser(), codenvyProfile.fetchPreferences()]);
+    route.resolve.app = ['$q', 'codenvyProfile', 'codenvyUser', 'codenvyService', function ($q, codenvyProfile, codenvyUser, codenvyService) {
+      return $q.all([codenvyUser.fetchUser(), codenvyProfile.fetchPreferences(), codenvyService.fetchServices()]);
     }];
 
     // add fetch of the onboarding flag for onpremises route
@@ -41,8 +41,8 @@ initModule.config(['$routeProvider', function ($routeProvider) {
 
   $routeProvider.accessOtherWise = function(route) {
     route.resolve || (route.resolve = {});
-    route.resolve.app = ['$q', 'codenvyProfile', 'codenvyUser', function ($q, codenvyProfile, codenvyUser) {
-      return $q.all([codenvyUser.fetchUser(), codenvyProfile.fetchPreferences()]);
+    route.resolve.app = ['$q', 'codenvyProfile', 'codenvyUser', 'codenvyService', function ($q, codenvyProfile, codenvyUser, codenvyService) {
+      return $q.all([codenvyUser.fetchUser(), codenvyProfile.fetchPreferences(), codenvyService.fetchServices()]);
     }];
     return $routeProvider.otherwise(route);
   };
@@ -227,13 +227,17 @@ initModule.run(['$rootScope', '$location', 'routingRedirect', 'codenvyUser', '$t
   });
 
   // When a route is about to change, notify the routing redirect node
-  $rootScope.$on('$routeChangeSuccess', (event, next)=> {
+  $rootScope.$on('$routeChangeSuccess', (event, next) => {
     if (next.resolve) {
       if (DEV) {
         console.log('$routeChangeSuccess event with route', next);
       }// check routes
       routingRedirect.check(event, next);
     }
+  });
+
+  $rootScope.$on('$routeChangeError', () => {
+    $location.path('/');
   });
 }]);
 
