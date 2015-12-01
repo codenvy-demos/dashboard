@@ -7,6 +7,7 @@ Codenvy Dashboard V2
 
 #Requirements
 
+TEST
 This new version is using bower and gulp as tools. So bower and gulp need to be installed
 ```sh
 $ npm install --global bower gulp
