@@ -18,6 +18,7 @@
         <groupId>org.eclipse.che.depmgt</groupId>
         <version>4.0.0-RC4-SNAPSHOT</version>
     </parent>
+    </parent>
     <groupId>org.eclipse.che.dashboard</groupId>
     <artifactId>che-dashboard-war</artifactId>
     <version>4.0.0-RC4-SNAPSHOT</version>
